@@ -3405,7 +3405,7 @@ string FindRenderedTextEnd(string text)
 {
     size_t index = 0;
 
-    while (index < text.length && (index + 1 >= text.length || text[index] != '#' || text[index + 1] != '#'))
+    while (index < text.length && (text[index] != '#' || text[index + 1] != '#'))
         index++;
     return text[0..index];
 }
@@ -12499,7 +12499,7 @@ void NavUpdateWindowingOverlay()
         if (!IsWindowNavFocusable(window))
             continue;
         string label = ImCstring(window.Name);
-        if (label.length == FindRenderedTextEnd(label).length)
+        if (label == FindRenderedTextEnd(label))
             label = GetFallbackWindowNameForWindowingList(window);
         Selectable(label, g.NavWindowingTarget == window);
     }
