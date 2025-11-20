@@ -506,35 +506,33 @@ static if (!IMGUI_DISABLE_DEFAULT_FILE_FUNCTIONS) {
 // - Wrapper for standard libs functions. (Note that imgui_demo.cpp does _not_ use them to keep the code easy to copy)
 static if (!IMGUI_DISABLE_DEFAULT_MATH_FUNCTIONS) {
 }
-import core.stdc.math;
-alias ImFabs = fabsf;
-alias ImSqrt = sqrtf;
-alias ImFmod = fmodf;
-alias ImCos = cosf;
-alias ImSin = sinf;
-alias ImAcos = acosf;
-alias ImAtan2 = atan2f;
+import std.math;
+alias ImFabs = abs;
+alias ImSqrt = sqrt;
+alias ImFmod = (float a, float b) => a % b;
+alias ImCos = cos;
+alias ImSin = sin;
+alias ImAcos = acos;
+alias ImAtan2 = atan2;
 double ImAtof(string str) {
     double result = 0.0;
     // ignore parse errors
     sscanf(str, "%lf", &result);
     return result;
 }
-pragma(inline, true) float  ImFloorStd(float X)     { return floorf(X); }           // We use our own, see ImFloor() and ImFloorSigned()
-alias ImCeil = ceilf;
-static pragma(inline, true) float  ImPow(float x, float y)    { return powf(x, y); }          // DragBehaviorT/SliderBehaviorT uses ImPow with either float/double and need the precision
-static pragma(inline, true) double ImPow(double x, double y)  { return pow(x, y); } // TODO D_IMGUI: See bug https://issues.dlang.org/show_bug.cgi?id=20905
-static pragma(inline, true) float  ImLog(float x)             { return logf(x); }             // DragBehaviorT/SliderBehaviorT uses ImLog with either float/double and need the precision
-static pragma(inline, true) double ImLog(double x)            { return log(x); }
+alias ImFloorStd = floor;           // We use our own, see ImFloor() and ImFloorSigned()
+alias ImCeil = ceil;
+alias ImPow = pow;          // DragBehaviorT/SliderBehaviorT uses ImPow with either float/double and need the precision
+alias ImLog = log;             // DragBehaviorT/SliderBehaviorT uses ImLog with either float/double and need the precision
 static pragma(inline, true) int    ImAbs(int x)               { return x < 0 ? -x : x; }
-static pragma(inline, true) float  ImAbs(float x)             { return fabsf(x); }
+static pragma(inline, true) float  ImAbs(float x)             { return fabs(x); }
 static pragma(inline, true) double ImAbs(double x)            { return fabs(x); }
 static pragma(inline, true) float  ImSign(float x)            { return (x < 0.0f) ? -1.0f : (x > 0.0f) ? 1.0f : 0.0f; } // Sign operator - returns -1, 0 or 1 based on sign of argument
 static pragma(inline, true) double ImSign(double x)           { return (x < 0.0) ? -1.0 : (x > 0.0) ? 1.0 : 0.0; }
 version (IMGUI_ENABLE_SSE) {
 static pragma(inline, true) float  ImRsqrt(float x)           { return _mm_cvtss_f32(_mm_rsqrt_ss(_mm_set_ss(x))); }
 } else {
-static pragma(inline, true) float  ImRsqrt(float x)           { return 1.0f / sqrtf(x); }
+static pragma(inline, true) float  ImRsqrt(float x)           { return 1.0f / sqrt(x); }
 }
 static pragma(inline, true) double ImRsqrt(double x)          { return 1.0 / sqrt(x); }
 
