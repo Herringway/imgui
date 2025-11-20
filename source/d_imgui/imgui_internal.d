@@ -337,17 +337,16 @@ pragma(inline, true) float IM_ROUND(float _VAL) {
 // This will call IM_DEBUG_BREAK() which you may redefine yourself. See https://github.com/scottt/debugbreak for more reference.
 static if (!D_IMGUI_USER_DEFINED_DEBUG_BREAK) {
     // It is expected that you define IM_DEBUG_BREAK() into something that will break nicely in a debugger!
-    version (LDC) {
-        pragma(inline, true) void IM_DEBUG_BREAK() {
-            import ldc.llvmasm : __asm;
-            __asm("int3", "");
-        }
-    } else {
-        // On DMD asm cannot be inlined
-        void IM_DEBUG_BREAK() {
-            asm nothrow @nogc{
-                int 3;
-            }
+    pragma(inline, true) void IM_DEBUG_BREAK() {
+        version (LDC) {
+            import ldc.intrinsics : llvm_trap;
+            llvm_trap();
+        } else {
+            version(X86) {
+                asm nothrow @nogc {
+                    int 3;
+                }
+            } else static assert(0, "Unsupported");
         }
     }
 } // #ifndef IM_DEBUG_BREAK
