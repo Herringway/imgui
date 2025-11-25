@@ -335,6 +335,11 @@ pragma(inline, true) float IM_ROUND(float _VAL) {
 // Debug Tools
 // Use 'Metrics/Debugger->Tools->Item Picker' to break into the call-stack of a specific item.
 // This will call IM_DEBUG_BREAK() which you may redefine yourself. See https://github.com/scottt/debugbreak for more reference.
+version(X86) {
+    version = X86_Any;
+} else version(X86_64) {
+    version = X86_Any;
+}
 static if (!D_IMGUI_USER_DEFINED_DEBUG_BREAK) {
     // It is expected that you define IM_DEBUG_BREAK() into something that will break nicely in a debugger!
     pragma(inline, true) void IM_DEBUG_BREAK() {
@@ -342,7 +347,7 @@ static if (!D_IMGUI_USER_DEFINED_DEBUG_BREAK) {
             import ldc.intrinsics : llvm_trap;
             llvm_trap();
         } else {
-            version(X86) {
+            version(X86_Any) {
                 asm nothrow @nogc {
                     int 3;
                 }
