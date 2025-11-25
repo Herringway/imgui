@@ -3,7 +3,7 @@
 		"Kyto"
 	],
 	"copyright": "Copyright © 2022-2023 KytoDragon, Copyright (c) 2014-2023 Omar Cornut",
-	"name": "d_imgui",
+	"name": "herringway_dimgui",
 	"description": "Port of Dear Imgui: Bloat-free Immediate Mode Graphical User interface with minimal dependencies",
 	"homepage": "https://github.com/KytoDragon/imgui/",
 	"license": "MIT",
